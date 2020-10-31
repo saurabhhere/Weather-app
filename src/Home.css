@@ -52,7 +52,7 @@
     grid-gap: 20px;
 }
 .location-time {
-    background-color: rebeccapurple;
+    /* background-color: rebeccapurple; */
     padding: 30px;
     font-size: 1.5rem;
 }
