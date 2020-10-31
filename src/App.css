@@ -1,0 +1,13 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: black;
+}
+
+.heading {
+    font-size: 40px;
+    padding: 30px;
+    display: flex;
+    justify-content: center;
+}
