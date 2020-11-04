@@ -1,6 +1,15 @@
 import React, { Component } from 'react'
 import './Home.css';
 import config from './config.js'
+import {
+    FaCloud,
+    FaBolt,
+    FaCloudRain,
+    FaCloudShowersHeavy,
+    FaSnowflake,
+    FaSun,
+    FaSmog,
+} from 'react-icons/fa';
 var api_key = config.API_KEY;
 
 class Home extends Component {
@@ -8,10 +17,11 @@ class Home extends Component {
         loading: true,
         city: '',
         data: '',
-        icon: '',
         date: '',
         sunrise: '',
-        sunset: ''
+        sunset: '',
+        temp: '',
+        error: ''
     }
     handleChange = (e) => {
         this.setState({
@@ -55,7 +65,43 @@ class Home extends Component {
             console.log("Error Occured!")
         }).then(data => {
             console.log('data', data);
-            let icon = `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`
+            // let icon = `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+            if (data.weather[0].main === 'Thunderstorm') {
+                this.setState ({
+                    icon : <FaBolt />
+                })
+                // weatherIcon = <FontAwesomeIcon icon={faBolt} />;
+              } else if (data.weather[0].main === 'Drizzle') {
+                this.setState ({
+                    icon : <FaCloudRain/>
+                })
+                // weatherIcon = <FontAwesomeIcon icon={faCloudRain} />;
+              } else if (data.weather[0].main === 'Rain') {
+                this.setState ({
+                    icon : <FaCloudShowersHeavy />
+                })
+                // weatherIcon = <FontAwesomeIcon icon={faCloudShowersHeavy} />;
+              } else if (data.weather[0].main === 'Snow') {
+                this.setState ({
+                    icon : <FaSnowflake />
+                })
+                // weatherIcon = <FontAwesomeIcon icon={faSnowflake} />;
+              } else if (data.weather[0].main === 'Clear') {
+                this.setState ({
+                    icon : <FaSun />
+                })
+                // weatherIcon = <FontAwesomeIcon icon={faSun} />;
+              } else if (data.weather[0].main === 'Clouds') {
+                this.setState ({
+                    icon : <FaCloud />
+                })
+                // weatherIcon = <FontAwesomeIcon icon={faCloud} />;
+              } else {
+                this.setState ({
+                    icon : <FaSmog />
+                })
+                // weatherIcon = <FontAwesomeIcon icon={faSmog} />;
+              }
             // console.log(icon);
             // console.log('Description', data.weather[0].description);
             // console.log('Icon', data.weather[0].icon);
@@ -70,7 +116,8 @@ class Home extends Component {
             this.setState({
                 data: data,
                 loading: false,
-                icon: icon,
+                // icon: icon,
+                temp: Math.round(parseFloat(data.main.temp)-273.15),
                 date: this.handleUnixToDate(data.dt),
                 sunrise: this.handleUnixToTime(data.sys.sunrise),
                 sunset: this.handleUnixToTime(data.sys.sunset)
@@ -79,7 +126,7 @@ class Home extends Component {
         this.setState({
             city: ''
         });
-    }
+    }  
 
     render() {
         return (
@@ -99,11 +146,12 @@ class Home extends Component {
                                         <div className="time">{this.state.date}</div>
                                     </div>
                                     <div className='logo-temp'>
-                                        <div className="icon-flex">
-                                            <img src={this.state.icon} alt='Icon' />
+                                        <div className="icon icon-flex">
+                                        {this.state.icon}
+                                            {/* <img className="icon" src={this.state.icon} alt='Icon' /> */}
                                         </div>
                                         <div className="description-flex">
-                                            <div className="output-temp data">{this.state.data.main.temp} K</div>
+                                            <div className="output-temp data">{this.state.temp} &deg;C</div>
                                             <div className="icon-description data">{this.state.data.weather[0].description}</div>
                                         </div>
                                     </div>
@@ -134,6 +182,7 @@ class Home extends Component {
                                         <div>{this.state.data.visibility} m</div>
                                     </div>
                                 </div>
+                            <div>{this.state.data.message}</div>
                             </div>
                         }
                     </div>
