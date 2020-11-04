@@ -59,11 +59,18 @@ class Home extends Component {
         let api = `https://cors-anywhere.herokuapp.com/api.openweathermap.org/data/2.5/weather?q=${this.state.city}&appid=${api_key}`;
         console.log("api", api);
         fetch(api).then(response => {
+            if (response.ok){
+                return response.json();
+            } else {
+                throw new Error('Something went wrong');
+            }   
             // converting data to json
-            return response.json();
         }).catch(function () {
             console.log("Error Occured!")
         }).then(data => {
+            if (data !== undefined){
+
+    
             console.log('data', data);
             // let icon = `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
             if (data.weather[0].main === 'Thunderstorm') {
@@ -121,7 +128,7 @@ class Home extends Component {
                 date: this.handleUnixToDate(data.dt),
                 sunrise: this.handleUnixToTime(data.sys.sunrise),
                 sunset: this.handleUnixToTime(data.sys.sunset)
-            })
+            })}
         });
         this.setState({
             city: ''
