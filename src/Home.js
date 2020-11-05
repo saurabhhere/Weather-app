@@ -21,7 +21,6 @@ class Home extends Component {
         sunrise: '',
         sunset: '',
         temp: '',
-        error: ''
     }
     handleChange = (e) => {
         this.setState({
@@ -48,8 +47,6 @@ class Home extends Component {
         var day = day_arr[temp.getDay()-1];
         var fulldate = day + ', ' + date + ' ' + month;
         return fulldate;
-
-
     }
 
 
@@ -62,68 +59,48 @@ class Home extends Component {
             if (response.ok){
                 return response.json();
             } else {
-                throw new Error('Something went wrong');
+                throw (response && ((response.response && response.response.data && (response.response.data.message || response.response.data)) || (response.code))) || response;
             }   
-            // converting data to json
         }).catch(function () {
-            console.log("Error Occured!")
+            alert("Something went wrong")
         }).then(data => {
             if (data !== undefined){
 
     
             console.log('data', data);
-            // let icon = `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
             if (data.weather[0].main === 'Thunderstorm') {
                 this.setState ({
                     icon : <FaBolt />
                 })
-                // weatherIcon = <FontAwesomeIcon icon={faBolt} />;
               } else if (data.weather[0].main === 'Drizzle') {
                 this.setState ({
                     icon : <FaCloudRain/>
                 })
-                // weatherIcon = <FontAwesomeIcon icon={faCloudRain} />;
               } else if (data.weather[0].main === 'Rain') {
                 this.setState ({
                     icon : <FaCloudShowersHeavy />
                 })
-                // weatherIcon = <FontAwesomeIcon icon={faCloudShowersHeavy} />;
               } else if (data.weather[0].main === 'Snow') {
                 this.setState ({
                     icon : <FaSnowflake />
                 })
-                // weatherIcon = <FontAwesomeIcon icon={faSnowflake} />;
               } else if (data.weather[0].main === 'Clear') {
                 this.setState ({
                     icon : <FaSun />
                 })
-                // weatherIcon = <FontAwesomeIcon icon={faSun} />;
               } else if (data.weather[0].main === 'Clouds') {
                 this.setState ({
                     icon : <FaCloud />
                 })
-                // weatherIcon = <FontAwesomeIcon icon={faCloud} />;
               } else {
                 this.setState ({
                     icon : <FaSmog />
                 })
-                // weatherIcon = <FontAwesomeIcon icon={faSmog} />;
               }
-            // console.log(icon);
-            // console.log('Description', data.weather[0].description);
-            // console.log('Icon', data.weather[0].icon);
-            // let temp = data.dt;
-            // let date = new Date(temp * 1000);
-            // console.log('Date', date.getDate());
-            // console.log('Month', date.getMonth());
-            // console.log('Day', date.getDay());
-            // console.log('Year', date.getYear());
-
 
             this.setState({
                 data: data,
                 loading: false,
-                // icon: icon,
                 temp: Math.round(parseFloat(data.main.temp)-273.15),
                 date: this.handleUnixToDate(data.dt),
                 sunrise: this.handleUnixToTime(data.sys.sunrise),
@@ -155,7 +132,6 @@ class Home extends Component {
                                     <div className='logo-temp'>
                                         <div className="icon icon-flex">
                                         {this.state.icon}
-                                            {/* <img className="icon" src={this.state.icon} alt='Icon' /> */}
                                         </div>
                                         <div className="description-flex">
                                             <div className="output-temp data">{this.state.temp} &deg;C</div>
