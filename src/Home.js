@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import './Home.css';
-import config from './config.js'
 import {
     FaCloud,
     FaBolt,
@@ -10,7 +9,7 @@ import {
     FaSun,
     FaSmog,
 } from 'react-icons/fa';
-var api_key = config.API_KEY;
+const api_key = process.env.REACT_APP_API_KEY;
 
 class Home extends Component {
     state = {
@@ -52,9 +51,7 @@ class Home extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        console.log(this.state.city);
         let api = `https://cors-anywhere.herokuapp.com/api.openweathermap.org/data/2.5/weather?q=${this.state.city}&appid=${api_key}`;
-        console.log("api", api);
         fetch(api).then(response => {
             if (response.ok){
                 return response.json();
@@ -67,7 +64,6 @@ class Home extends Component {
             if (data !== undefined){
 
     
-            console.log('data', data);
             if (data.weather[0].main === 'Thunderstorm') {
                 this.setState ({
                     icon : <FaBolt />
