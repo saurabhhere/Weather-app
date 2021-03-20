@@ -51,7 +51,7 @@ class Home extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        let api = `https://cors-anywhere.herokuapp.com/api.openweathermap.org/data/2.5/weather?q=${this.state.city}&appid=${api_key}`;
+        let api = `https://api.openweathermap.org/data/2.5/weather?q=${this.state.city}&appid=${api_key}`;
         fetch(api).then(response => {
             if (response.ok){
                 return response.json();
